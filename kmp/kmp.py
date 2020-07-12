@@ -26,7 +26,7 @@ while i < len(original):
         j = next[j]
     i += 1
 
-print(original)
-print(pattern)
-print(next)
-print(i - len(pattern) + 1)
+print('orignal  ' + original)
+print('pattern  ' + pattern)
+print('next     ' + str(next))
+print('result   ' + str(i - len(pattern) + 1))
