@@ -62,26 +62,20 @@ def main():
                 comtext += '0' * FILL
             # byte_temp += str(hex('%02d' % int(comtext[i:i+8], 2)))[2:]
             byte_temp += '%02x' % int(comtext[i:i+8], 2)
-        # print(comtext)
-        # print(byte_temp)
-        print(len(comtext))
-        print(len(byte_temp))
         byte_str = bytes.fromhex(byte_temp)
         with open("samples/my-father.txt.com", "wb") as file_compress:
-            byte_str = bytes(str(FILL) + '\n' + str(CODE_KEY) + '\n', encoding='ascii') + byte_str
+            byte_str = bytes(str(FILL) + '\n' + str(CODE_KEY) + '\n', encoding='utf-8') + byte_str
             file_compress.write(byte_str)
 
         with open("samples/my-father.txt.com", "rb") as file_decompress:
-            FILL = int(str(file_decompress.readline(), encoding='ascii'))
-            CODE_KEY = eval(str(file_decompress.readline(), encoding='ascii'))
-            print(FILL)
-            print(CODE_KEY)
+            FILL = int(str(file_decompress.readline(), encoding='utf-8'))
+            CODE_KEY = eval(str(file_decompress.readline(), encoding='utf-8'))
             byte_str = file_decompress.read()
             byte_str = ''.join(['%02x' % b for b in byte_str])
-            if FILL == 0:
-                comtext = str(bin(int(byte_str, 16))[2:])
-            else:
-                comtext = str(bin(int(byte_str, 16))[2:-FILL])
+            comtext = ''.join([str(bin(int(b, 16)))[2:].rjust(4, '0') for b in byte_str])  # add front '0'
+            if FILL:
+                comtext = comtext[:-FILL]
+            print(len(comtext))
             txt = decompress(comtext)
             with open("samples/my-father.txt.org", "w") as file_origin:
                 file_origin.write(txt)
