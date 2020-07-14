@@ -1,4 +1,5 @@
 def heap_sort(l: list):
+    # flag is init
     def sort(num: int, node: int, flag: bool):
         # print(str(node) +' '+str(num))
         if num == len(l) - 1:
@@ -6,8 +7,7 @@ def heap_sort(l: list):
         if node < 0:
             l[0], l[-(num) - 1] = l[-(num) - 1], l[0] #swap topest
             num += 1
-            sort(num, int((len(l) - num) / 2) - 1, True)
-            return
+            node = 0
         if node * 2 + 1 < len(l) - num:
             if l[node] < l[node * 2 + 1]:
                 l[node], l[node * 2 + 1] = l[node * 2 + 1], l[node]
