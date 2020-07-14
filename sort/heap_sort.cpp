@@ -5,53 +5,66 @@
 
 using namespace std;
 
-//vector<int> ori {0, 1, 8, 22, 35, 2, 9, 6};
-vector<int> ori {0, 1, 8, 22, 2, 9, 35, 6};
-int n = ori.size() - 1;
 
-void heap_sort (vector<int>& tmp, int start)
-{
-	if (start > n)
-	{
+vector<int> arr{1, 8, 22, 2, 9, 35, 6};
+int n = arr.size();
+int flag = 0;
+
+void to_down(vector<int> &tmp, int start) {
+	if (flag == 1) {
+		flag = 0;
 		return;
 	}
 
-	// 大于就进行交换，小于不用
-//	if (ori[start] < ori[start * 2])
-//	{
-//		// 不用交换
-//	}
+	int left = start * 2 + 1;
+	int right = left + 1;
+	int tmp_node = start;
 
-	int left = start * 2;
-	int right = start * 2 + 1;
-	int tm_node;
-
-	// left node
-	if ( ori[left] != 0 && ori[start] > ori[left])
-	{
-		if (ori[right] != 0 && ori[right] < ori[left])
-		{
-			// have right node && right < left
-		}
-
+	if (arr[left] != 0 && arr[left] < arr[start]) {
+		tmp_node = left;
+	}
+	if (arr[right] != 0 && arr[right] < arr[tmp_node]) {
+		tmp_node = right;
 	}
 
-	// right node
-	return;
+	if (start == tmp_node) {
+		flag = 1;
+		return;
+	}
+	swap(arr[start], arr[tmp_node]);
 }
-int main(void)
+
+void init_heap(vector<int> &tmp) {
+	for (int i = (n / 2) - 1; i >= 0; --i) {
+		to_down(arr, i);
+	}
+}
+
+void heap_sort (void)
 {
+	while (n >= 0)
+	{
+		swap(arr[1], arr[n]);
+		to_down(arr, 0);
+//		cout << arr[n] << " ";
+		n --;
+	}
+//	cout.put('\n');
+}
+
+
+int main(void) {
 	ostream_iterator<int, char> out(cout, " ");
 
-	cout << "before:" << endl;
-	copy(ori.begin(), ori.end(), out);
+	copy(arr.begin(), arr.end(), out);
 	cout.put('\n');
 
-	cout << "after: " << endl;
-	heap_sort(ori, 1);
-	copy(ori.begin(), ori.end(), out);
+	init_heap(arr); // 建堆
+	copy(arr.begin(), arr.end(), out);
 	cout.put('\n');
-	
 
+	heap_sort();
+	copy(arr.begin(), arr.end(), out);
+	cout.put('\n');
 	return 0;
 }
